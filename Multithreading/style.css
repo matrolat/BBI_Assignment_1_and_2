@@ -1,0 +1,99 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 400px;
+  text-align: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+#workerCountSlider {
+  width: 300px;
+  margin: 10px 0;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4db8ff;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+button:hover {
+  background-color: #3a9ed9;
+}
+
+#progressContainer {
+  width: 100px;
+  height: 100px;
+  margin-top: 20px;
+  text-align: center;
+  position: relative;
+  display: none;
+}
+
+.circular-chart {
+  transform: rotate(-90deg);
+}
+
+.circle-background {
+  stroke: #e6e6e6;
+}
+
+.circle {
+  stroke: #4db8ff;
+  transition: stroke-dasharray 0.3s ease, stroke-dashoffset 0.3s ease;
+}
+
+.loaderContainer{
+    display:flex; justify-content: center;margin-bottom: 10px;
+}
+
+#progressText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  font-weight: bold;
+  color: #4db8ff;
+}
+
+h4 {
+  font-size: 18px;
+  color: #333;
+}
+
+#result,
+#executionTime {
+  font-size: 16px;
+  color: #666;
+}
+
+label {
+  font-size: 16px;
+  color: #333;
+  margin-right: 10px;
+}
