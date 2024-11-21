@@ -5,5 +5,4 @@ public interface PowerControl {
     void switchOff();
     void togglePower();
     boolean checkPowerStatus();
-
 }

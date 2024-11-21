@@ -30,11 +30,20 @@ public class SmartSpeaker implements AudioControl, PowerControl, NetworkConnecte
 
     @Override
     public void setVolume(int volume) {
-        if (volume >= 0 && volume <= 100) {
-            this.volume = volume;
-            System.out.println("Volume set to: " + volume);
+        
+        if (isPoweredOn) {
+           
+
+            if (volume >= 0 && volume <= 100) {
+                this.volume = volume;
+                System.out.println("Volume set to: " + volume);
+            } else {
+                System.out.println("Set a valid volume (0-100).");
+            }
+
+
         } else {
-            System.out.println("Set a valid volume (0-100).");
+            System.out.println("Audio is muted or inactive. Cannot increase volume.");
         }
     }
 

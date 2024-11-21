@@ -6,11 +6,11 @@ import Interfaces.PowerControl;
 
 public class SmartTV implements AudioControl, PowerControl, NetworkConnected {
     // sound variables
-    private int volume = 50; 
-    // private boolean isSoundActive = true; 
-    private boolean isMuted = false; 
+    private int volume = 50;
+    // private boolean isPoweredOn = false;
+    private boolean isMuted = false;
     // power variables
-    private boolean isSoundActive = false; 
+    private boolean isPoweredOn = false;
     // network variables
     private boolean isWifiEnabled = false;
     private String connectedNetwork = null;
@@ -18,41 +18,58 @@ public class SmartTV implements AudioControl, PowerControl, NetworkConnected {
     // Sound Methods
     @Override
     public void enableAudio() {
-        isSoundActive = true;
+        isPoweredOn = true;
         System.out.println("Audio enabled.");
     }
 
     @Override
     public void disableAudio() {
-        isSoundActive = false;
+        isPoweredOn = false;
         System.out.println("Audio disabled.");
     }
 
     @Override
     public void setVolume(int volume) {
-        if (volume >= 0 && volume <= 100) {
-            this.volume = volume;
-            System.out.println("Volume set to: " + volume);
+
+        if (isPoweredOn) {
+           
+
+            if (volume >= 0 && volume <= 100) {
+                this.volume = volume;
+                System.out.println("Volume set to: " + volume);
+            } else {
+                System.out.println("Set a valid volume (0-100).");
+            }
+
+
         } else {
-            System.out.println("Set a valid volume (0-100).");
+            System.out.println("Audio is muted or inactive. Cannot increase volume.");
         }
+
+
     }
 
     @Override
     public int getVolume() {
+
+        try {
+            if (!isPoweredOn) {
+                throw new Exception("Please turn on the power to acess the volume");
+            }
+        } catch (Exception err) {
+            System.out.println(err);
+        }
         return volume;
     }
 
     @Override
+    public boolean checkMuteStatus() {
+        return isMuted;
+    }
+
+    @Override
     public void increaseVolume(int amount) {
-
-        if(amount<0)
-        {
-            System.out.println("Volume amount is not valid");
-            return;
-        }
-
-        if (!isMuted && isSoundActive ) {
+        if (!isMuted && isPoweredOn) {
             if (volume + amount <= 100) {
                 volume += amount;
                 System.out.println("Volume increased to: " + volume);
@@ -67,14 +84,7 @@ public class SmartTV implements AudioControl, PowerControl, NetworkConnected {
 
     @Override
     public void decreaseVolume(int amount) {
-
-        if(amount<0)
-        {
-            System.out.println("Volume amount is not valid");
-            return;
-        }
-
-        if (!isMuted && isSoundActive) {
+        if (!isMuted && isPoweredOn) {
             if (volume - amount >= 0) {
                 volume -= amount;
                 System.out.println("Volume decreased to: " + volume);
@@ -99,17 +109,11 @@ public class SmartTV implements AudioControl, PowerControl, NetworkConnected {
         System.out.println("Audio unmuted.");
     }
 
-    @Override
-    public boolean checkMuteStatus()
-    {
-        return isMuted;
-    }
-
-   // Power Methods
+    // Power Methods
     @Override
     public void switchOn() {
-        if (!isSoundActive) {
-            isSoundActive = true;
+        if (!isPoweredOn) {
+            isPoweredOn = true;
             System.out.println("SmartTV is now ON.");
         } else {
             System.out.println("SmartTV is already ON.");
@@ -118,8 +122,8 @@ public class SmartTV implements AudioControl, PowerControl, NetworkConnected {
 
     @Override
     public void switchOff() {
-        if (isSoundActive) {
-            isSoundActive = false;
+        if (isPoweredOn) {
+            isPoweredOn = false;
             System.out.println("SmartTV is now OFF.");
         } else {
             System.out.println("SmartTV is already OFF.");
@@ -128,7 +132,7 @@ public class SmartTV implements AudioControl, PowerControl, NetworkConnected {
 
     @Override
     public void togglePower() {
-        if (isSoundActive) {
+        if (isPoweredOn) {
             switchOff();
         } else {
             switchOn();
@@ -137,12 +141,17 @@ public class SmartTV implements AudioControl, PowerControl, NetworkConnected {
 
     @Override
     public boolean checkPowerStatus() {
-        return isSoundActive;
+        return isPoweredOn;
     }
 
     // NetworkConnected methods
+    // NetworkConnected methods
     @Override
     public boolean checkConnectionStatus() {
+        if (!isPoweredOn) {
+            System.out.println("Please turn on the power to check the connection status.");
+            return false;
+        }
         if (isWifiEnabled && connectedNetwork != null) {
             System.out.println("Connected to network: " + connectedNetwork);
             return true;
@@ -154,6 +163,10 @@ public class SmartTV implements AudioControl, PowerControl, NetworkConnected {
 
     @Override
     public void enableWifi() {
+        if (!isPoweredOn) {
+            System.out.println("Please turn on the power to enable Wi-Fi.");
+            return;
+        }
         if (!isWifiEnabled) {
             isWifiEnabled = true;
             System.out.println("Wi-Fi enabled.");
@@ -164,6 +177,10 @@ public class SmartTV implements AudioControl, PowerControl, NetworkConnected {
 
     @Override
     public void disableWifi() {
+        if (!isPoweredOn) {
+            System.out.println("Please turn on the power to disable Wi-Fi.");
+            return;
+        }
         if (isWifiEnabled) {
             isWifiEnabled = false;
             connectedNetwork = null; // Disconnect from the current network
@@ -175,6 +192,10 @@ public class SmartTV implements AudioControl, PowerControl, NetworkConnected {
 
     @Override
     public void connectToNetwork(String network) {
+        if (!isPoweredOn) {
+            System.out.println("Please turn on the power to connect to a network.");
+            return;
+        }
         if (isWifiEnabled) {
             connectedNetwork = network;
             System.out.println("Connected to network: " + network);
@@ -185,14 +206,15 @@ public class SmartTV implements AudioControl, PowerControl, NetworkConnected {
 
     @Override
     public void reconnect() {
+        if (!isPoweredOn) {
+            System.out.println("Please turn on the power to reconnect to a network.");
+            return;
+        }
         if (isWifiEnabled && connectedNetwork != null) {
             System.out.println("Reconnecting to network: " + connectedNetwork);
         } else {
             System.out.println("No previously connected network or Wi-Fi is disabled.");
         }
     }
-
-
-
 
 }

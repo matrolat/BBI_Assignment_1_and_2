@@ -41,6 +41,7 @@ public class SmartTVTest {
     @Test
     public void testSetVolume() {
         SmartTV tv = new SmartTV();
+        tv.switchOn();
         tv.setVolume(70);
         assertEquals("Volume should be set to 70", 70, tv.getVolume());
     }
@@ -76,14 +77,16 @@ public class SmartTVTest {
     @Test
     public void testEnableWifi() {
         SmartTV tv = new SmartTV();
+        tv.switchOn();
         tv.enableWifi();
         tv.connectToNetwork("HomeWiFi");
         assertTrue("Wi-Fi should be enabled", tv.checkConnectionStatus());
     }
-
+    
     @Test
     public void testDisableWifi() {
         SmartTV tv = new SmartTV();
+        tv.switchOn();
         tv.enableWifi();
         tv.disableWifi();
         assertFalse("Wi-Fi should be disabled", tv.checkConnectionStatus());
@@ -92,6 +95,7 @@ public class SmartTVTest {
     @Test
     public void testConnectToNetwork() {
         SmartTV tv = new SmartTV();
+        tv.switchOn();
         tv.enableWifi();
         tv.connectToNetwork("HomeWiFi");
         assertTrue("TV should be connected to HomeWiFi", tv.checkConnectionStatus());
@@ -100,6 +104,7 @@ public class SmartTVTest {
     @Test
     public void testReconnectToNetwork() {
         SmartTV tv = new SmartTV();
+        tv.switchOn();
         tv.enableWifi();
         tv.connectToNetwork("HomeWiFi");
         tv.reconnect();

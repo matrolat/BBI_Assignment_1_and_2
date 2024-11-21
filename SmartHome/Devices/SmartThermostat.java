@@ -6,24 +6,23 @@ import Interfaces.NetworkConnected;
 
 public class SmartThermostat implements TemperatureControl, PowerControl, NetworkConnected {
     private double currentTemperature;
-    private boolean powerStatus; 
-    private boolean wifiEnabled; 
+    private boolean powerStatus;
+    private boolean wifiEnabled;
     private String connectedNetwork;
 
     // Constructor
     public SmartThermostat(double initialTemperature) {
         this.currentTemperature = initialTemperature;
         this.powerStatus = true;
-        this.wifiEnabled = false; 
-        this.connectedNetwork = null; 
+        this.wifiEnabled = false;
+        this.connectedNetwork = null;
     }
-    
-    public SmartThermostat()
-    {    
+
+    public SmartThermostat() {
         this.currentTemperature = 17;
         this.powerStatus = false;
-        this.wifiEnabled = false; 
-        this.connectedNetwork = null; 
+        this.wifiEnabled = false;
+        this.connectedNetwork = null;
     }
 
     // Implementing TemperatureControl methods
@@ -52,7 +51,8 @@ public class SmartThermostat implements TemperatureControl, PowerControl, Networ
     public void increaseTemp(double increment) {
         if (powerStatus) {
             this.currentTemperature += increment;
-            System.out.println("Temperature increased by " + increment + "°C. New temperature: " + currentTemperature + "°C");
+            System.out.println(
+                    "Temperature increased by " + increment + "°C. New temperature: " + currentTemperature + "°C");
         } else {
             System.out.println("Cannot increase temperature. Power is OFF.");
         }
@@ -62,7 +62,8 @@ public class SmartThermostat implements TemperatureControl, PowerControl, Networ
     public void decreaseTemp(double decrement) {
         if (powerStatus) {
             this.currentTemperature -= decrement;
-            System.out.println("Temperature decreased by " + decrement + "°C. New temperature: " + currentTemperature + "°C");
+            System.out.println(
+                    "Temperature decreased by " + decrement + "°C. New temperature: " + currentTemperature + "°C");
         } else {
             System.out.println("Cannot decrease temperature. Power is OFF.");
         }
@@ -94,41 +95,65 @@ public class SmartThermostat implements TemperatureControl, PowerControl, Networ
     }
 
     // Implementing NetworkConnected methods
+    // Implementing NetworkConnected methods
     @Override
     public boolean checkConnectionStatus() {
-        System.out.println("WiFi connection status: " + (wifiEnabled && connectedNetwork != null ? "Connected to " + connectedNetwork : "Disconnected"));
-        return wifiEnabled && connectedNetwork != null;
+        if (powerStatus) {
+            System.out.println("WiFi connection status: "
+                    + (wifiEnabled && connectedNetwork != null ? "Connected to " + connectedNetwork : "Disconnected"));
+            return wifiEnabled && connectedNetwork != null;
+        } else {
+            System.out.println("Cannot check connection status. Power is OFF.");
+            return false;
+        }
     }
 
     @Override
     public void enableWifi() {
-        wifiEnabled = true;
-        System.out.println("WiFi enabled.");
+        if (powerStatus) {
+            wifiEnabled = true;
+            System.out.println("WiFi enabled.");
+        } else {
+            System.out.println("Cannot enable WiFi. Power is OFF.");
+        }
     }
 
     @Override
     public void disableWifi() {
-        wifiEnabled = false;
-        connectedNetwork = null;
-        System.out.println("WiFi disabled.");
+        if (powerStatus) {
+            wifiEnabled = false;
+            connectedNetwork = null;
+            System.out.println("WiFi disabled.");
+        } else {
+            System.out.println("Cannot disable WiFi. Power is OFF.");
+        }
     }
 
     @Override
     public void connectToNetwork(String network) {
-        if (wifiEnabled) {
-            connectedNetwork = network;
-            System.out.println("Connected to network: " + network);
+        if (powerStatus) {
+            if (wifiEnabled) {
+                connectedNetwork = network;
+                System.out.println("Connected to network: " + network);
+            } else {
+                System.out.println("Cannot connect to network. WiFi is disabled.");
+            }
         } else {
-            System.out.println("Cannot connect to network. WiFi is disabled.");
+            System.out.println("Cannot connect to network. Power is OFF.");
         }
     }
 
     @Override
     public void reconnect() {
-        if (wifiEnabled && connectedNetwork != null) {
-            System.out.println("Reconnecting to network: " + connectedNetwork);
+        if (powerStatus) {
+            if (wifiEnabled && connectedNetwork != null) {
+                System.out.println("Reconnecting to network: " + connectedNetwork);
+            } else {
+                System.out.println("Cannot reconnect. No network configured or WiFi is disabled.");
+            }
         } else {
-            System.out.println("Cannot reconnect. No network configured or WiFi is disabled.");
+            System.out.println("Cannot reconnect. Power is OFF.");
         }
     }
+
 }

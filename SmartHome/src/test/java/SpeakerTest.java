@@ -39,6 +39,7 @@ public class SpeakerTest {
     @Test
     public void testSetVolume() {
         SmartSpeaker speaker = new SmartSpeaker();
+        speaker.switchOn();
         speaker.setVolume(70);
         assertEquals(70, speaker.getVolume());
     }
