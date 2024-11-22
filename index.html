@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <script>
+        console.log(navigator.hardwareConcurrency);
+        
+    </script>
+</head>
+<body>
+    
+    <div class="container">
+        <h1>CPU-Intensive Function</h1>
+        <br>
+        <h3>Finding Prime Numbers till 1000000</h3>
+        <br>
+        
+        <div>
+            <label for="workerCountSlider">Number of Workers:</label>
+            <input type="range" id="workerCountSlider" min="1" max="4" value="4" />
+            <span id="workerCountValue">4</span>
+        </div>
+        
+        <div>
+            <button id="singleThreadBtn">Single Thread Execution</button>
+            <button id="multiThreadBtn">Multi Thread Execution</button>
+            <button id="cancelBtn">Cancel</button>
+        </div>
+        
+        <div class="loaderContainer" >
+            <div id="progressContainer" style="display: none;">
+                 <svg viewBox="0 0 36 36" class="circular-chart">
+                     <circle class="circle-background"
+                         fill="none"
+                         stroke="#e6e6e6"
+                         stroke-width="3"
+                         cx="18"
+                         cy="18"
+                         r="15.9155"  <!-- radius of circle -->
+                     ></circle>
+                     <circle class="circle"
+                         fill="none"
+                         stroke="#4db8ff"
+                         stroke-width="3"
+                         cx="18"
+                         cy="18"
+                         r="15.9155"  <!-- radius of circle -->
+                         stroke-dasharray="100, 100"
+                     ></circle>
+                 </svg>
+                 <span id="progressText">0%</span>
+             </div>
+
+        </div>
+      
+
+
+        <div>
+            <h4 id="status"></h4>
+            <h4 id="result"></h4> 
+            <h4 id="executionTime"></h4>
+        </div>
+
+        <!-- Circular Progress Bar -->
+        
+    </div>
+    
+    <script src="main.js"></script>
+    <script src="worker-thread.js"></script>
+</body>
+</html>

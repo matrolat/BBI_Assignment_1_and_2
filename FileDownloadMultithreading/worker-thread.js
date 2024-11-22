@@ -64,7 +64,9 @@ async function downloadFile(url, id) {
       chunks.push(value);
       receivedLength += value.length;
 
+      
       const progress = Math.round((receivedLength / contentLength) * 100);
+
       self.postMessage({ type: "progress", progress, id });
     }
 
